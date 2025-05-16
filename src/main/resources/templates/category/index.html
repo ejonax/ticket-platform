@@ -1,0 +1,68 @@
+
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <div th:replace="~{fragments/commonHF :: myHeader}"></div>
+    <title>Ingredienti</title>
+</head>
+
+<body class="d-flex flex-column min-vh-100">
+    <nav th:replace="~{fragments/navbar :: navbar('category')}"></nav>
+    
+    <main class="flex-grow-1">
+        <div class="container py-4">
+            <h1 class="text-center my-4">Category</h1>
+            
+            <div class="row justify-content-center">
+               
+                <!-- FORM -->
+                <div class="col-md-6 col-lg-5">
+                    <form id="category-form" 
+                        th:object="${categoryObj}" 
+                        th:action="@{/category/create}" 
+                        method="post"
+                        class="p-4 rounded shadow bg-light">
+                        <div class="input-group mb-3">
+                            <input id="category" 
+                                th:field="*{catNome}" 
+                                type="text" 
+                                class="form-control" 
+                                placeholder="Inserisci una categoria...">
+                            <button class="btn btn-primary" type="submit">
+                                <i class="bi bi-plus-lg"></i> Aggiungi
+                            </button>
+                        </div>
+
+                        <div th:each="err : ${#fields.allErrors()}" th:text="${err}" class="text-danger">
+                        </div>
+                    </form>
+                    <!-- RISULTATI -->
+                    <!-- i records che si leggono sul DB -->
+                    <ul class="list-group mt-4" th:if="${categories.size() > 0}">
+                        <li class="list-group-item d-flex justify-content-between align-items-center" th:each="item : ${categories}">
+                            <span th:text="${item.catNome}"></span>
+                            <form th:action="@{|/category/delete/${item.catId}|}" 
+                                method="post" 
+                                onsubmit="return confirm('Sei sicuro di voler eliminare questo categoria?')">
+                                <button class="btn btn-sm btn-danger" type="submit">
+                                    <i class="bi bi-trash3"></i>
+                                </button>
+                            </form>
+                        </li>
+                    </ul>
+                    
+
+                    <div class="alert alert-warning text-center mt-4" role="alert" th:unless="${categories.size() > 0}">
+                        Non ci sono categorie nella database.
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <div th:insert="~{fragments/commonHF :: myFooter}"></div>
+</body>
+
+</html>

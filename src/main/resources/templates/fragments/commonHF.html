@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:fragment="myHeader">
+     <meta charset="utf-8">
+     <meta name="viewport" content="width=device-width, initial-scale=1">
+
+     <!-- Bootstrap CSS -->
+     <link th:rel="stylesheet" th:href="@{/webjars/bootstrap/5.1.3/css/bootstrap.min.css}" />
+     <link rel="stylesheet" th:href="@{/css/application.css}">
+
+     <!-- Bootstrap Icons -->
+     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" >
+
+     <!-- Custom CSS -->
+     <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+
+<body>
+ <div th:fragment="myFooter" class="mt-5">
+     <footer class="bg-dark text-white py-4">
+          <div class="container text-center">
+              <p class="mb-0">@PizzeriaDB 
+                 <span class="fs-5 text-warning fw-bold" th:text="${T(java.time.LocalDate).now().year}"></span>
+               </p>
+          </div>
+     </footer>
+ </div>
+  
+  <div th:fragment="bootstrapScript">
+    <script th:src="@{/webjars/bootstrap/5.1.3/js/bootstrap.bundle.min.js}"></script>
+  </div>
+  
+</body>
+</html>

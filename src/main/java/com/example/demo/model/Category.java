@@ -15,40 +15,44 @@ import jakarta.persistence.Table;
 public class Category {
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
-    private Integer cat_id;
+    private Integer catId;
 
     @Column(nullable = false, length = 25)
-    private String cat_nome;
+    private String catNome;
 
     @Column(length = 65)
-    private String cat_description;
+    private String catDescription;
 
     // catgory table
     @ManyToMany(mappedBy = "categories")
     private List<Ticket> tickets;
 
     public Integer getCat_id() {
-        return cat_id;
+        return catId;
     }
 
-    public void setCat_id(Integer cat_id) {
-        this.cat_id = cat_id;
+    public Integer getCatId() {
+        return catId;
     }
 
-    public String getCat_nome() {
-        return cat_nome;
+    public void setCatId(Integer catId) {
+        this.catId = catId;
     }
 
-    public void setCat_nome(String cat_nome) {
-        this.cat_nome = cat_nome;
+    public String getCatNome() {
+        return catNome;
     }
 
-    public String getCat_description() {
-        return cat_description;
+    public void setCatNome(String catNome) {
+        this.catNome = catNome;
     }
 
-    public void setCat_description(String cat_description) {
-        this.cat_description = cat_description;
+    public String getCatDescription() {
+        return catDescription;
+    }
+
+    public void setCatDescription(String catDescription) {
+        this.catDescription = catDescription;
     }
 
     public List<Ticket> getTickets() {
@@ -58,5 +62,6 @@ public class Category {
     public void setTickets(List<Ticket> tickets) {
         this.tickets = tickets;
     }
+
 
 }
