@@ -16,7 +16,7 @@ public class StatoUser {
 
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
-    private Integer stato_user_id;
+    private Integer statoUserId;
 
     @Column(nullable = false, length = 50)
     private String statoDescription;
@@ -24,14 +24,6 @@ public class StatoUser {
     //user table
     @OneToMany(mappedBy = "statoUser")
     private List<User> users;
-
-    public Integer getStato_user_id() {
-        return stato_user_id;
-    }
-
-    public void setStato_user_id(Integer stato_user_id) {
-        this.stato_user_id = stato_user_id;
-    }
 
     public String getStatoDescription() {
         return statoDescription;
@@ -47,5 +39,13 @@ public class StatoUser {
 
     public void setUsers(List<User> users) {
         this.users = users;
+    }
+
+    public Integer getStatoUserId() {
+        return statoUserId;
+    }
+
+    public void setStatoUserId(Integer statoUserId) {
+        this.statoUserId = statoUserId;
     }
 }

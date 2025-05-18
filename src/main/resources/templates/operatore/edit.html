@@ -1,0 +1,70 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Operatore</title>
+    <div th:replace="~{fragments/commonHF :: myHeader}"></div>
+</head>
+
+<body class="d-flex flex-column min-vh-100">
+    <nav th:replace="~{fragments/navbar :: navbar('operatore')}"></nav>
+    <main class="flex-grow-1">
+        <div class="container py-4">
+            <h1 class="text-center my-4">Modifica l'operatore</h1>         
+            <div class="row justify-content-center">
+                <!-- FORM -->
+                <div class="col-md-6 col-lg-5">
+                    <form id="operatore-form" 
+                        th:object="${operatore}" 
+                        th:action="@{|/operatore/edit/${operatore.userId}|}" 
+                        method="post"
+                        class="p-4 rounded shadow bg-light">
+                        <div class="input-group mb-3">
+                            <!-- Dati operatore-->
+                            <div class="col-8">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <input type="hidden" th:field="*{userId}" />
+                                        <label class="form-label">Email</label>
+                                        <input type="text" class="form-control" id="email" th:field="*{email}"
+                                            th:errorClass="is-invalid">
+
+                                        <ul th:if="${#fields.hasErrors('email')}">
+                                            <li th:each="err : ${#fields.errors('email')}" class="text-danger" th:text="${err}"></li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-12">
+                                        <label class="form-label">Password</label>
+                                        <input type="text" class="form-control" id="password" th:field="*{password}"
+                                            th:errorClass="is-invalid">
+
+                                        <ul th:if="${#fields.hasErrors('password')}">
+                                            <li th:each="err : ${#fields.errors('password')}" class="text-danger" th:text="${err}"></li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-12">
+                                        <label for="statoUser" class="form-label">Stato</label>
+                                        <select th:field="*{statoUser}" class="form-select" id="statoUser" required>
+                                            <option value="" selected> Seleziona uno stato..</option>
+                                            <option th:each="s : ${stati}" th:value="${s.statoUserId}" th:text="${s.statoDescription}"></option>
+                                        </select>
+
+                                        <ul th:if="${#fields.hasErrors('statoUser.statoDescription')}">
+                                            <li th:each="err : ${#fields.errors('statoUser.statoDescription')}" class="text-danger" th:text="${err}"></li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-12">
+                                        <button class="btn btn-primary" type="submit"><i class="fas fa-check"></i> Save</button>
+                                        <a class="btn btn-danger" th:href="@{/operatore}"> <i class="fas fa-times"></i> Cancel</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </main>
+    <div th:insert="~{fragments/commonHF :: myFooter}"></div>
+</body>
+</html>

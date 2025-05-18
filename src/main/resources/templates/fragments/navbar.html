@@ -15,14 +15,20 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav">
+                    <!--Ticket tab-->
                     <li class="nav-item">
                         <a class="nav-link" th:classAppend="${current == 'ticket'} ? active : not-active" 
                         aria-current="page" th:href="@{/ticket}">Ticket</a>
                     </li>
-                    
+                     <!--Category tab-->
                     <li class="nav-item"> 
                         <a class="nav-link" th:classAppend="${current == 'category'} ? active : not-active" 
                         aria-current="page" th:href="@{/category}">Category</a> 
+                     </li> 
+                      <!--operatore tab-->
+                    <li class="nav-item"> 
+                        <a class="nav-link" th:classAppend="${current == 'operatore'} ? active : not-active" 
+                        aria-current="page" th:href="@{/operatore}">Operatore</a> 
                      </li> 
                     
                 </ul>

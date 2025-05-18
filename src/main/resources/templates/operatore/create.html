@@ -1,0 +1,58 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <div th:replace="~{fragments/commonHF :: myHeader}"></div>
+    <title>Crea nuovo operatore</title>
+</head>
+
+<body class="d-flex flex-column min-vh-100">
+    <nav th:replace="~{fragments/navbar :: navbar('operatore')}"></nav>
+    
+    <main class="flex-grow-1">
+        <div class="container py-4">
+            <h1 class="text-center my-4">Operatore</h1>
+            <div class="row justify-content-center">
+                <!-- FORM -->
+                <div class="col-md-6 col-lg-5">
+                <!-- FORM -->
+                    <form id="operatore-form"  
+                          th:object="${utentiObj}" 
+                          th:action="@{/operatore/create}" 
+                          method="post"
+                          class="p-4 rounded shadow bg-light">
+                        <div class="row">
+                            <div class="col-8">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <label for="email" class="form-label">Email</label>
+                                        <input th:field="*{email}" type="email" class="form-control" id="email" required>
+                                        <ul th:if="${#fields.hasErrors('email')}">
+                                            <li th:each="err : ${#fields.errors('email')}" class="text-danger" th:text="${err}"></li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-12">
+                                        <label for="password" class="form-label">Password</label>
+                                        <input th:field="*{password}" type="password" class="form-control" id="password" required>
+                                    </div>
+                                    <div class="col-12">
+                                        <label for="statoUser" class="form-label">Stato</label>
+                                        <select th:field="*{statoUser}" class="form-select" id="statoUser" required>
+                                            <option value="" selected> Seleziona uno stato..</option>
+                                            <option th:each="s : ${stati}" th:value="${s.statoUserId}" th:text="${s.statoDescription}"></option>
+                                        </select>
+                                    </div>
+                                    <div class="col-12">
+                                        <button class="btn btn-primary mt-2" type="submit"><i class="fas fa-check"></i> Save</button>
+                                        <a class="btn btn-danger mt-2" th:href="@{/operatore}"> <i class="fas fa-times"></i> Cancel</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+            </div>
+        </div>
+    </main>
+    <div th:insert="~{fragments/commonHF :: myFooter}"></div>
+</body>
+</html>

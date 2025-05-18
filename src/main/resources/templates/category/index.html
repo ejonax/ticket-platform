@@ -15,7 +15,6 @@
             <h1 class="text-center my-4">Category</h1>
             
             <div class="row justify-content-center">
-               
                 <!-- FORM -->
                 <div class="col-md-6 col-lg-5">
                     <form id="category-form" 
@@ -51,8 +50,6 @@
                             </form>
                         </li>
                     </ul>
-                    
-
                     <div class="alert alert-warning text-center mt-4" role="alert" th:unless="${categories.size() > 0}">
                         Non ci sono categorie nella database.
                     </div>
@@ -61,8 +58,7 @@
             </div>
         </div>
     </main>
-
-    <div th:insert="~{fragments/commonHF :: myFooter}"></div>
+   <div th:insert="~{fragments/commonHF :: myFooter}"></div>
 </body>
 
 </html>

@@ -13,17 +13,21 @@ import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 
 @Entity
 @Table(name = "User")
 public class User {
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
-    private Integer user_id;
+    private Integer userId;
 
-    @Column(nullable = false, length = 50)
+    @Email
+    @Column(nullable = false, length = 50, unique = true)
     private String email;
 
+    @NotBlank
     @Column(nullable = false, length = 50)
     private String password;
 
@@ -53,13 +57,7 @@ public class User {
     @OneToMany(mappedBy = "assegnato_a_id")
     private List<Ticket> ticketAssegnati;
 
-    public Integer getUser_id() {
-        return user_id;
-    }
-
-    public void setUser_id(Integer user_id) {
-        this.user_id = user_id;
-    }
+   
 
     public String getEmail() {
         return email;
@@ -115,6 +113,14 @@ public class User {
 
     public void setTicketAssegnati(List<Ticket> ticketAssegnati) {
         this.ticketAssegnati = ticketAssegnati;
+    }
+
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 
     
