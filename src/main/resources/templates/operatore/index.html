@@ -1,0 +1,94 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Operatore</title>
+    <div th:replace="~{fragments/commonHF :: myHeader}"></div>
+</head>
+
+<body class="d-flex flex-column min-vh-100">
+    <nav th:replace="~{fragments/navbar :: navbar('operatore')}"></nav>
+   
+    <main class="flex-grow-1">
+        <div class="container py-4" >
+                <th:block th:if="${successMessage != null}">
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        <span th:text="${successMessage}"></span>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                </th:block>
+                <div class="mb-3 d-flex justify-content-between">
+                    <a class="btn btn-success" th:href="@{/operatore/create}"><svg xmlns="http://www.w3.org/2000/svg" width="16"
+                            height="16" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
+                            <path
+                                d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4" />
+                        </svg> Aggiungi operatore</a>
+                    <form th:action="@{/operatore}" method="get">
+                        <div class="input-group">
+                            <input name="keyword" 
+                                   th:value="${keyword}" 
+                                   class="form-control" 
+                                   type="search"
+                                   placeholder="Cerca con email" 
+                                   aria-label="Inserisci email">
+                            <button class="btn btn-primary" type="submit"><svg xmlns="http://www.w3.org/2000/svg" width="16"
+                                    height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                                    <path
+                                        d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0" />
+                                </svg></button>
+                        </div>
+                    </form>
+                </div>
+
+            <div th:if="${utenti.isEmpty()}">
+                <h3 >Lista degli operatori</h3>
+                <p> Spiacente, non ci sono ancora degli operatori nel nostro DB!</p>
+            </div>
+
+            <div th:unless="${utenti.size() < 0}" class="container">
+                <h3 class="my-4 d-flex align-items-center">
+                    <i class="bi bi-list-stars"></i>
+                    Lista degli operatori
+                </h3>
+                <table class="table table-hover table-sm">
+                    <thead>
+                        <tr>
+                        <!-- <th>id</th> -->
+                        <th>Email</th>
+                        <th>Password</th>
+                        <th>Stato</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="utenteElemento : ${utenti}" >
+                            <td th:text="${utenteElemento.email}"></td>
+                            <td th:text="${utenteElemento.password}"></td>
+                            <td th:text="${utenteElemento.statoUser.statoDescription}"></td>
+                            <td>
+                                <a class="btn btn-primary" th:href="@{|/operatore/show/${utenteElemento.userId}|}">
+                                    <i class="bi bi-book"></i>
+                                </a>
+                            </td>
+                            <td>
+                                <a class="btn btn-primary" th:href="@{|/operatore/edit/${utenteElemento.userId}|}">
+                                    <i class="bi bi-pencil-fill"></i>
+                                </a>
+                            </td>
+                            <td>
+                                <form action="#" th:action="@{'/operatore/delete/{id}'(id=${utenteElemento.userId})}" method="post">
+                                    <button class="btn btn-danger" type="submit" id="submitButton" onclick="return confirm('Sei sicuro?')">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+    </main>
+    <div th:insert="~{fragments/commonHF :: myFooter}"></div>
+</body>
+</html>

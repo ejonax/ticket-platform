@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.demo.model.User;
 import com.example.demo.repository.StatoUserRepository;
@@ -30,8 +32,18 @@ public class UserController {
 
 
     @GetMapping
-    public String index(Model model) {
-        model.addAttribute("utenti", userRepository.findAll());
+    public String index(Model model,@RequestParam(name = "keyword", required = false) String email) {
+
+        List<User> utentiList;
+        
+        if (email !=null && !email.isEmpty()) {
+            utentiList=userRepository.findByEmailContainingIgnoreCase(email);
+            
+        }else {
+            utentiList=userRepository.findAll();
+        }
+
+        model.addAttribute("utenti",utentiList);
         model.addAttribute("utentiObj", new User());
         model.addAttribute("stati", statoUserRepository.findAll());
         return "operatore/index";
