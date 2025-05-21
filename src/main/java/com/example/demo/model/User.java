@@ -50,11 +50,11 @@ public class User {
     private List<Nota> noteCreate;
 
     //ticket table
-    @OneToMany(mappedBy = "creato_da_id")
+    @OneToMany(mappedBy = "creatoDaId")
     private List<Ticket> ticketCreati;
 
     //ticket table
-    @OneToMany(mappedBy = "assegnato_a_id")
+    @OneToMany(mappedBy = "assegnatoAId")
     private List<Ticket> ticketAssegnati;
 
    

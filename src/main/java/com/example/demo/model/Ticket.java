@@ -1,7 +1,9 @@
 package com.example.demo.model;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
+
+import org.springframework.format.annotation.DateTimeFormat;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -14,40 +16,50 @@ import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "Ticket")
 public class Ticket {
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
-    private Integer ticket_id;
+    private Integer ticketId;
 
+    @NotBlank
     @Column(nullable = false, length = 25)
     private String titolo;
 
+    @NotBlank
     @Column(nullable = false, length = 65)
     private String descrizione;
 
     //user table
+    @NotNull(message = "Devi selezionare un operatore creato da.")
     @ManyToOne
     @JoinColumn(name = "creato_da_id", nullable = false)
-    private User creato_da_id;
+    private User creatoDaId;
 
     //user table
+    @Valid
+    @NotNull(message = "Devi selezionare un operatore")
     @ManyToOne
     @JoinColumn(name = "assegnato_a_id", nullable = false)
-    private User assegnato_a_id;
+    private User assegnatoAId;
 
     @Column(nullable = false)
-    private Date data_apertura;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDate dataApertura;
 
     @Column(nullable = false)
-    private Date data_chiusura;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDate dataChiusura;
 
     //stato_ticket table
     @ManyToOne
     @JoinColumn(name = "stato_ticket_id", nullable = false)
-    private StatoTicket stato_ticket_id;
+    private StatoTicket statoTicketId;
 
     //nota table
     @OneToMany(mappedBy = "ticket")
@@ -62,12 +74,12 @@ public class Ticket {
     )
     private List<Category> categories;
 
-    public Integer getTicket_id() {
-        return ticket_id;
+    public Integer getTicketId() {
+        return ticketId;
     }
 
-    public void setTicket_id(Integer ticket_id) {
-        this.ticket_id = ticket_id;
+    public void setTicketId(Integer ticketId) {
+        this.ticketId = ticketId;
     }
 
     public String getTitolo() {
@@ -86,44 +98,44 @@ public class Ticket {
         this.descrizione = descrizione;
     }
 
-    public User getCreato_da_id() {
-        return creato_da_id;
+    public User getCreatoDaId() {
+        return creatoDaId;
     }
 
-    public void setCreato_da_id(User creato_da_id) {
-        this.creato_da_id = creato_da_id;
+    public void setCreatoDaId(User creatoDaId) {
+        this.creatoDaId = creatoDaId;
     }
 
-    public User getAssegnato_a_id() {
-        return assegnato_a_id;
+    public User getAssegnatoAId() {
+        return assegnatoAId;
     }
 
-    public void setAssegnato_a_id(User assegnato_a_id) {
-        this.assegnato_a_id = assegnato_a_id;
+    public void setAssegnatoAId(User assegnatoAId) {
+        this.assegnatoAId = assegnatoAId;
     }
 
-    public Date getData_apertura() {
-        return data_apertura;
+    public LocalDate getDataApertura() {
+        return dataApertura;
     }
 
-    public void setData_apertura(Date data_apertura) {
-        this.data_apertura = data_apertura;
+    public void setDataApertura(LocalDate dataApertura) {
+        this.dataApertura = dataApertura;
     }
 
-    public Date getData_chiusura() {
-        return data_chiusura;
+    public LocalDate getDataChiusura() {
+        return dataChiusura;
     }
 
-    public void setData_chiusura(Date data_chiusura) {
-        this.data_chiusura = data_chiusura;
+    public void setDataChiusura(LocalDate dataChiusura) {
+        this.dataChiusura = dataChiusura;
     }
 
-    public StatoTicket getStato_ticket_id() {
-        return stato_ticket_id;
+    public StatoTicket getStatoTicketId() {
+        return statoTicketId;
     }
 
-    public void setStato_ticket_id(StatoTicket stato_ticket_id) {
-        this.stato_ticket_id = stato_ticket_id;
+    public void setStatoTicketId(StatoTicket statoTicketId) {
+        this.statoTicketId = statoTicketId;
     }
 
     public List<Nota> getNote() {
@@ -141,7 +153,5 @@ public class Ticket {
     public void setCategories(List<Category> categories) {
         this.categories = categories;
     }
-
-    
 
 }

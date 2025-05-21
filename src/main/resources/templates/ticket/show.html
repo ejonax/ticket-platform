@@ -1,0 +1,64 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Ticket</title>
+    <div th:replace="~{fragments/commonHF :: myHeader}"></div>
+</head>
+
+<body class="d-flex flex-column min-vh-100">
+    <nav th:replace="~{fragments/navbar :: navbar('ticket')}"></nav>
+
+    <main class="flex-grow-1">
+        <div class="container py-4" th:object="${ticket}">
+                    <h1 class="text-center my-4">Il ticket selezionato</h1>
+
+                    <div class="row justify-content-center">
+                        <!-- Le info del ticket -->
+                        <div class="col-md-6 col-lg-5">
+                            <h3>Info sul ticket </h3>
+                            <hr>
+                            <dl>
+                                <dt>Titolo</dt>
+                                <dd th:text="*{titolo}"></dd>
+                            </dl>
+                            <dl>
+                                <dt>Categoria</dt>
+                                <td>
+                                    <span th:if="${#lists.isEmpty(ticket.categories)}">Nessuna categoria</span>
+                                    <span th:each="cat : ${ticket.categories}" th:text="${cat.catNome}"></span>
+                              </td>
+                            </dl>
+                            <dl>
+                                <dt>Descrizione</dt>
+                                <dd th:text="*{descrizione}"></dd>
+                            </dl>
+                            <dl>
+                                <dt>Creato a</dt>
+                                <dd th:text="*{dataApertura}"></dd>
+                            </dl>
+                            <dl>
+                                <dt>Chiuso a</dt>
+                                <dd th:text="*{dataChiusura}"></dd>
+                            </dl>
+                            <dl>
+                                <dt>Stato</dt>
+                                <dd th:text="*{statoTicketId.statoDescription}"></dd>
+                            </dl>
+                            <dl>
+                                <dt>Assegnato a</dt>
+                                <dd th:text="*{assegnatoAId.email}"></dd>
+                            </dl>
+                            <dl>
+                                <dt>Creato da</dt>
+                                <dd th:text="*{creatoDaId.email}"></dd>
+                            </dl>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+   </main>
+<div th:insert="~{fragments/commonHF :: myFooter}"></div>
+</body>
+</html>

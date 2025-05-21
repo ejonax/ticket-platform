@@ -1,0 +1,111 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <div th:replace="~{fragments/commonHF :: myHeader}"></div>
+     <title>Creare un ticket</title>
+</head>
+
+<body class="d-flex flex-column min-vh-100">
+    <nav th:replace="~{fragments/navbar :: navbar('ticket')}"></nav>
+        
+    <main class="flex-grow-1">
+        <div class="container py-4">
+            <h1>Nuovo Ticket</h1>
+            <hr />
+
+            <form id="ticket-form" 
+                  th:object="${ticket}" 
+                  th:action="@{/ticket/create}" 
+                  method="post"
+                  class="p-4 rounded shadow bg-light">
+                <div class="row">
+                        <!-- Info per un nuovo ticket da creare-->
+                        <div class="col-8">
+                            <div class="row">
+                                <div class="col-12">
+                                    <label class="form-label">Titolo</label>
+                                    <input type="text" class="form-control" id="titolo" th:field="*{titolo}"
+                                        th:errorClass="is-invalid">
+                                    <ul th:if="${#fields.hasErrors('titolo')}">
+                                        <li th:each="err : ${#fields.errors('titolo')}" class="text-danger" th:text="${err}"></li>
+                                    </ul>
+                                </div>
+                                <div class="col-12">
+                                    <label class="form-label">Categoria</label>
+                                    <select th:field="*{categories}" class="form-select" required>
+                                        <option value="" selected>Seleziona una categoria...</option>
+                                        <option th:each="cat : ${categorie}"
+                                                th:value="${cat.catId}"
+                                                th:text="${cat.catNome}"></option>
+                                    </select>
+                                
+                                    <ul th:if="${#fields.hasErrors('categories')}">
+                                        <li th:each="err : ${#fields.errors('categories')}" class="text-danger" th:text="${err}"></li>
+                                    </ul>
+                                </div>
+                                <div class="col-6">
+                                    <label class="form-label">Data Apertura</label>
+                                    <input type="date" class="form-control" th:field="*{dataApertura}" />
+                                </div>
+                                
+                                <div class="col-6">
+                                    <label class="form-label">Data Chiusura</label>
+                                    <input type="date" class="form-control" th:field="*{dataChiusura}" />
+                                </div>
+                                <div class="col-12">
+                                    <label class="form-label">Creato da</label>
+                                    <select th:field="*{creatoDaId}" class="form-select" id="creatoDaId">
+                                        <option value="" selected>Seleziona un operatore</option>
+                                        <option th:each="s: ${allUsers}" th:value="${s.userId}" th:text="${s.email}"></option>
+                                    </select>
+                                    <ul th:if="${#fields.hasErrors('creatoDaId')}">
+                                        <li th:each="err : ${#fields.errors('creatoDaId')}" class="text-danger" th:text="${err}"></li>
+                                    </ul>
+                                </div>
+                                <div class="col-12">
+                                    <label class="form-label">Assegnato a</label>
+                                        <select th:field="*{assegnatoAId}" class="form-select" id="assegnatoAId" >
+                                            <option value="" selected>Seleziona un operatore</option>
+                                            <option th:each="s: ${userDisponibili}" th:value="${s.userId}" th:text="${s.email}"></option>
+                                        </select>
+        
+                                    <ul th:if="${#fields.hasErrors('assegnatoAId')}">
+                                        <li th:each="err : ${#fields.errors('titolo')}" class="text-danger" th:text="${err}"></li>
+                                    </ul>
+                                </div>
+                                <div class="col-12">
+                                    <label class="form-label">Descrizione</label>
+                                    <textarea type="text" class="form-control" id="descrizione" th:field="*{descrizione}"
+                                        th:errorClass="is-invalid" rows="3">
+                                        </textarea>
+                                    <ul th:if="${#fields.hasErrors('descrizione')}">
+                                        <li th:each="err : ${#fields.errors('descrizione')}" class="text-danger" th:text="${err}"></li>
+                                    </ul>
+                                </div>
+                                <div class="col-12">
+                                    <label for="stati" class="form-label">Stato</label>
+                                    <select th:field="*{statoTicketId}" class="form-select" id="statoTicketId" required>
+                                        <option value="" selected>Seleziona uno stato...</option>
+                                        <option th:each="s : ${stati}" th:value="${s.statoTicketId}" th:text="${s.statoDescription}">
+                                        </option>
+                                    </select>
+                                   <ul th:if="${#fields.hasErrors('statoTicketId')}">
+                                        <li th:each="err : ${#fields.errors('statoTicketId')}" class="text-danger" th:text="${err}"></li>
+                                    </ul>
+                                </div>
+                                <div class="col-12">
+                                    <button class="btn btn-primary mt-2" type="submit"><i class="fas fa-check"></i> Save</button>
+                                    <a class="btn btn-danger mt-2" th:href="@{/ticket}"> <i class="fas fa-times"></i> Cancel</a>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </form>
+        </div>
+    </main>
+       
+    <div th:insert="~{fragments/commonHF :: myFooter}"></div>
+</body>
+</html>

@@ -16,28 +16,51 @@
                     <div class="row justify-content-center">
                         <!-- Le info dell'operatore -->
                         <div class="col-md-6 col-lg-5">
-                            <h3>Info sull'utente</h3>
-                            <hr>
-                            <dl>
-                                <dt>Email dell'operatore</dt>
-                                <dd th:text="*{email}"></dd>
-                            </dl>
-                            <dl>
-                                <dt>Password dell'opeatore</dt>
-                                <dd th:text="*{password}"></dd>
-                            </dl>
-                            
-                            <dl>
-                                <dt>Stato dell'operatore</dt>
-                                <dd th:text="*{statoUser.statoDescription}"></dd>
-                            </dl>
+                            <ul>
+                                <li><strong>Email:</strong> <span th:text="${user.email}"></span></li>
+                                <li><strong>Username:</strong> <span th:text="${user.password}"></span></li>
+                                <li><strong>Stato:</strong> <span th:text="${user.statoUser.statoDescription}"></span></li>
+                            </ul>
                         </div>
+                        <h3>Ticket assegnati</h3>
+                        
+                        <table class="table table-hover table-sm">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Titolo</th>
+                                    <th>Categoria</th>
+                                    <th>Descrizione</th>
+                                    <th>Stato</th>
+                                    <th>Data Apertura</th>
+                                    <th>Data Chiusura</th>
+                                    <th>Assegnato a</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:if="${#lists.isEmpty(tickets)}">
+                                    <td colspan="7">Nessun ticket assegnato</td>
+                                </tr>
+                                <tr th:each="ticket : ${tickets}">
+                                    <td th:text="${ticket.ticketId}"></td>
+                                    <td th:text="${ticket.titolo}"></td>
+                                    <td>
+                                          <span th:if="${#lists.isEmpty(ticket.categories)}">Nessuna categoria</span>
+                                          <span th:each="cat : ${ticket.categories}" th:text="${cat.catNome}"></span>
+                                    </td>
+                                    <td th:text="${ticket.descrizione}"></td>
+                                    <td th:text="${ticket.statoTicketId.statoDescription}"></td>
+                                    <td th:text="${ticket.dataApertura}"></td>
+                                    <td th:text="${ticket.dataChiusura}"></td>
+                                    <td th:text="${ticket.assegnatoAId.email}"></td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
         </div>
    </main>
-
 <div th:insert="~{fragments/commonHF :: myFooter}"></div>
 </body>
 </html>

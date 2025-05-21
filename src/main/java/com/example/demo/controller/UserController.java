@@ -14,8 +14,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.example.demo.model.Ticket;
 import com.example.demo.model.User;
 import com.example.demo.repository.StatoUserRepository;
+import com.example.demo.repository.TicketRepository;
 import com.example.demo.repository.UserRepository;
 
 import jakarta.validation.Valid;
@@ -29,6 +31,9 @@ public class UserController {
 
     @Autowired
     private StatoUserRepository statoUserRepository;
+
+    @Autowired
+    private TicketRepository ticketRepository;
 
 
     @GetMapping
@@ -80,19 +85,21 @@ public class UserController {
 
     @GetMapping("/show/{id}")
     public String show(@PathVariable("id") Integer id, Model model) {
+
         Optional<User> optUser = userRepository.findById(id);
 
-        if (optUser.isPresent()) {
-            model.addAttribute("operatore", optUser.get());
-            return "/operatore/show";
+        if (optUser.isEmpty()) {
+            return "redirect:/";
         }
 
-        model.addAttribute("errorCause",
-                "Non esiste un'operatore con id " + id);
-        model.addAttribute("errorMessage",
-                "Errore di ricerca dell'operatore");
 
-        return "/errors/error";
+        List<Ticket> ticketList = ticketRepository.findByAssegnatoAId_UserId(optUser.get().getUserId());
+    
+        model.addAttribute("user", optUser.get());
+        model.addAttribute("tickets", ticketList);
+    
+        return "operatore/show";
+       
     }
 
     @PostMapping("/delete/{id}")

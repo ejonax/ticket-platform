@@ -48,4 +48,5 @@ public class StatoUser {
     public void setStatoUserId(Integer statoUserId) {
         this.statoUserId = statoUserId;
     }
+
 }

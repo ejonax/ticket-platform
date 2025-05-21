@@ -35,7 +35,7 @@ public class CategoryController {
 
 
   @PostMapping("/create")
-public String store(@Valid @ModelAttribute("categoryObj") Category category,
+   public String store(@Valid @ModelAttribute("categoryObj") Category category,
                     BindingResult bindingResult,
                     Model model) {
 
