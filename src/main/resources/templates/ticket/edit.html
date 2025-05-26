@@ -53,7 +53,7 @@
                                     </div>
                                     <div class="col-12">
                                         <label class="form-label">Categoria</label>
-                                            <select th:field="*{categories}" class="form-select" id="categories">
+                                           <select th:field="*{categories}" class="form-select" id="categories">
                                                 <option value="" selected>Seleziona una categoria</option>
                                                 <option th:each="cat : ${categories}"
                                                         th:value="${cat.catId}"
@@ -107,8 +107,8 @@
                                         </ul>
                                     </div>
                                     <div class="col-12">
-                                        <button class="btn btn-primary" type="submit"><i class="fas fa-check"></i> Save</button>
-                                        <a class="btn btn-danger" th:href="@{/ticket}"> <i class="fas fa-times"></i> Cancel</a>
+                                        <button class="btn btn-primary mt-2" type="submit"><i class="fas fa-check"></i> Save</button>
+                                        <a class="btn btn-danger mt-2" th:href="@{/ticket}"> <i class="fas fa-times"></i> Cancel</a>
                                     </div>
                                 </div>
                             </div>

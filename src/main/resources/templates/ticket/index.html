@@ -18,7 +18,9 @@
                     </div>
                 </th:block>
                 <div class="mb-3 d-flex justify-content-between">
-                    <a class="btn btn-success" th:href="@{/ticket/create}"><svg xmlns="http://www.w3.org/2000/svg" width="16"
+                    <a class="btn btn-success" th:href="@{/ticket/create}"
+                       th:if="${#authorization.expression('hasAuthority(''admin'')')}">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16"
                             height="16" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
                             <path
                                 d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4" />
@@ -75,17 +77,22 @@
                             <td th:text="${ticketElemento.assegnatoAId.email}"></td>
                             <td th:text="${ticketElemento.creatoDaId.email}"></td>
                             <td >
+                                <!-- icon libro ( show) deve essere visibile sia all'admin che operatore -->
                                 <a class="btn btn-primary" th:href="@{|/ticket/show/${ticketElemento.ticketId}|}">
                                     <i class="bi bi-book"></i>
                                 </a>
                             </td>
                             <td>
-                                <a class="btn btn-primary" th:href="@{|/ticket/edit/${ticketElemento.ticketId}|}">
+                                <!-- icon penna ( edit) deve essere visibile sia all'admin che operatore  -->
+                                <a class="btn btn-primary" th:href="@{|/ticket/edit/${ticketElemento.ticketId}|}"
+                                   th:if="${#authorization.expression('hasAuthority(''admin'') or hasAuthority(''oper'')')}">
                                     <i class="bi bi-pencil-fill"></i>
                                 </a>
                             </td>
                             <td>
-                                <form action="#" th:action="@{'/ticket/delete/{id}'(id=${ticketElemento.ticketId})}" method="post">
+                               <!--  icon bin (delete) deve essere visibile sia all'admin che operatore -->
+                                <form action="#" th:action="@{'/ticket/delete/{id}'(id=${ticketElemento.ticketId})}" method="post"
+                                      th:if="${#authorization.expression('hasAuthority(''admin'')')}">
                                     <button class="btn btn-danger" type="submit" id="submitButton" onclick="return confirm('Sei sicuro?')">
                                         <i class="bi bi-trash"></i>
                                     </button>

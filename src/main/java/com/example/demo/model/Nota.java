@@ -1,6 +1,6 @@
 package com.example.demo.model;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -16,13 +16,13 @@ import jakarta.persistence.Table;
 public class Nota {
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
-    private Integer nota_id;
+    private Integer notaId;
 
     @Column(nullable = false, length = 65)
     private String descrizione;
 
     @Column(nullable = false)
-    private Date data_nota;
+    private LocalDate dataNota;
 
     // user table
     @ManyToOne
@@ -34,12 +34,12 @@ public class Nota {
     @JoinColumn(name = "ticket_id", nullable = false)
     private Ticket ticket;
 
-    public Integer getNota_id() {
-        return nota_id;
+    public Integer getNotaId() {
+        return notaId;
     }
 
-    public void setNota_id(Integer nota_id) {
-        this.nota_id = nota_id;
+    public void setNotaId(Integer notaId) {
+        this.notaId = notaId;
     }
 
     public String getDescrizione() {
@@ -50,12 +50,12 @@ public class Nota {
         this.descrizione = descrizione;
     }
 
-    public Date getData_nota() {
-        return data_nota;
+    public LocalDate getDataNota() {
+        return dataNota;
     }
 
-    public void setData_nota(Date data_nota) {
-        this.data_nota = data_nota;
+    public void setDataNota(LocalDate dataNota) {
+        this.dataNota = dataNota;
     }
 
     public User getAutore() {
@@ -74,5 +74,6 @@ public class Nota {
         this.ticket = ticket;
     }
 
+   
    
 }

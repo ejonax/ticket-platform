@@ -15,40 +15,40 @@ import jakarta.persistence.Table;
 public class Role {
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
-    private Integer role_id;
+    private Integer roleId;
 
     @Column(nullable = false, length = 15)
-    private String role_name;
+    private String roleName;
 
     @Column(length = 50)
-    private String role_description;
+    private String roleDescription;
 
     //user table
     @ManyToMany(mappedBy = "roles")
     private List<User> users;
 
-    public Integer getRole_id() {
-        return role_id;
+    public Integer getRoleId() {
+        return roleId;
     }
 
-    public void setRole_id(Integer role_id) {
-        this.role_id = role_id;
+    public void setRoleId(Integer roleId) {
+        this.roleId = roleId;
     }
 
-    public String getRole_name() {
-        return role_name;
+    public String getRoleName() {
+        return roleName;
     }
 
-    public void setRole_name(String role_name) {
-        this.role_name = role_name;
+    public void setRoleName(String roleName) {
+        this.roleName = roleName;
     }
 
-    public String getRole_description() {
-        return role_description;
+    public String getRoleDescription() {
+        return roleDescription;
     }
 
-    public void setRole_description(String role_description) {
-        this.role_description = role_description;
+    public void setRoleDescription(String roleDescription) {
+        this.roleDescription = roleDescription;
     }
 
     public List<User> getUsers() {

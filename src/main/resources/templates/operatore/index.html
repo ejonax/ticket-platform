@@ -17,7 +17,9 @@
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>
                 </th:block>
-                <div class="mb-3 d-flex justify-content-between">
+                  <!-- se sei un operatore viene listato solo il tuo operatore, non si genera la forma di ricerca -->
+                <div class="mb-3 d-flex justify-content-between"
+                     th:if="${#authorization.expression('hasAuthority(''admin'')')}">
                     <a class="btn btn-success" th:href="@{/operatore/create}"><svg xmlns="http://www.w3.org/2000/svg" width="16"
                             height="16" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
                             <path
@@ -75,7 +77,9 @@
                                 </a>
                             </td>
                             <td>
-                                <form action="#" th:action="@{'/operatore/delete/{id}'(id=${utenteElemento.userId})}" method="post">
+                            <!-- se sei un operatore non puoi vedere la form della cancelazione di un operator -->  
+                                <form action="#" th:action="@{'/operatore/delete/{id}'(id=${utenteElemento.userId})}" method="post"
+                                     th:if="${#authorization.expression('hasAuthority(''admin'')')}">
                                     <button class="btn btn-danger" type="submit" id="submitButton" onclick="return confirm('Sei sicuro?')">
                                         <i class="bi bi-trash"></i>
                                     </button>

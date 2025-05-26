@@ -33,6 +33,15 @@
                     
                 </ul>
             </div>
+            <div class="text-light">
+                BENVENUTO:<span  th:text="${#authentication.name}"></span> <br>
+                RUOLO: <span th:each="role : ${#authentication.authorities}" th:text="${role.authority}"></span>
+                
+               <!-- <a class="btn btn-primary" href="/logout"> LOGOUT </a>-->
+                <form th:action="@{/logout}" method="post">
+                    <button type="submit" class="btn btn-danger">Logout</button>
+                </form>
+            </div>
         </div>
     </nav>
 

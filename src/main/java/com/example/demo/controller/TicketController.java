@@ -5,6 +5,9 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -15,6 +18,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.example.demo.model.Nota;
 import com.example.demo.model.Ticket;
 import com.example.demo.model.User;
 import com.example.demo.repository.CategoryRepository;
@@ -44,15 +48,33 @@ public class TicketController {
    
     @GetMapping
     public String index(Model model,
-                        @RequestParam (name="keyword", required=false) String titolo) 
+                        @RequestParam (name="keyword", required=false) String titolo,
+                        Authentication authentication) 
     {
         List<Ticket> tickets;
 
-        if (titolo !=null && !titolo.isEmpty()) {
-            tickets=ticketRepository.findByTitoloContainingIgnoreCase(titolo);
-            
+        String userEmail = authentication.getName(); // email dell'utente loggato
+        
+        boolean isAdmin = false;
+        for (GrantedAuthority ruolo : authentication.getAuthorities()) {
+           if (ruolo.getAuthority().equals("admin")) {
+               isAdmin = true;
+                break;
+            }
+        }
+    
+        if (titolo != null && !titolo.isEmpty()) {
+            if (isAdmin) {
+                tickets = ticketRepository.findByTitoloContainingIgnoreCase(titolo);
+            } else {
+                tickets = ticketRepository.findByTitoloContainingIgnoreCaseAndAssegnatoAId_Email(titolo, userEmail);
+            }
         } else {
-            tickets = ticketRepository.findAll();
+            if (isAdmin) {
+                tickets = ticketRepository.findAll();
+            } else {
+                tickets = ticketRepository.findByAssegnatoAId_Email(userEmail);
+            }
         }
 
 
@@ -64,6 +86,7 @@ public class TicketController {
     public String show(@PathVariable Integer id, Model model) {
         Ticket ticket = ticketRepository.findById(id).orElseThrow();
         model.addAttribute("ticket", ticket);
+        model.addAttribute("nota", new Nota());
         return "/ticket/show"; // Nome della vista per i dettagli
     }
 
@@ -125,6 +148,11 @@ public class TicketController {
         ticket.setDataChiusura(oggi.plusDays(30));
     }
 
+    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+    String email = auth.getName(); // email dell'utente loggato
+    User userLoggato = userRepository.findByEmail(email).orElseThrow();
+
+    ticket.setCreatoDaId(userLoggato);
     ticketRepository.save(ticket);
     return "redirect:/ticket";
 }
@@ -150,7 +178,7 @@ public class TicketController {
         if (ticketForm.getDataApertura() != null && ticketForm.getDataChiusura() != null) {
              //data apertura deve essere prima della data di chiusura
             if (!ticketForm.getDataApertura().isBefore(ticketForm.getDataChiusura())) {
-                bindingResult.rejectValue("dataApertura", null, "La data di apertura deve essere prima della data di chiusura");
+                bindingResult.rejectValue("dataApertura", "invalid", "La data di apertura deve essere prima della data di chiusura");
             }
 
             /* non vale come controllo perchè se vogliamo cambiare solo l'operatore ma non le date allora si genere l'errore delle date */
@@ -165,7 +193,7 @@ public class TicketController {
 
         Optional<User> assegnato = userRepository.findById(ticketForm.getAssegnatoAId().getUserId());
         if (assegnato.isEmpty()) {
-            bindingResult.rejectValue("assegnatoAId", null, "Seleziona un operatore disponibile");
+            bindingResult.rejectValue("assegnatoAId", "invalid", "Seleziona un operatore disponibile");
         }
     
         if (bindingResult.hasErrors()) {

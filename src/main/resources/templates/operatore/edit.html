@@ -10,7 +10,7 @@
     <nav th:replace="~{fragments/navbar :: navbar('operatore')}"></nav>
     <main class="flex-grow-1">
         <div class="container py-4">
-            <h1 class="text-center my-4">Modifica l'operatore</h1>         
+            <h1 class="text-center my-4">Modifica l'operatore</h1>      
             <div class="row justify-content-center">
                 <!-- FORM -->
                 <div class="col-md-6 col-lg-5">
@@ -52,6 +52,9 @@
                                         <ul th:if="${#fields.hasErrors('statoUser.statoDescription')}">
                                             <li th:each="err : ${#fields.errors('statoUser.statoDescription')}" class="text-danger" th:text="${err}"></li>
                                         </ul>
+
+                                        <div th:if="${#fields.hasErrors('statoUser')}" class="text-danger" th:errors="*{statoUser}"></div>
+
                                     </div>
                                     <div class="col-12">
                                         <button class="btn btn-primary" type="submit"><i class="fas fa-check"></i> Save</button>

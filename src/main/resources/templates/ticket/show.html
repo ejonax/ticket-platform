@@ -54,6 +54,30 @@
                                 <dd th:text="*{creatoDaId.email}"></dd>
                             </dl>
                         </div>
+                        <h3>Note</h3>
+                        <div>
+                            <div th:if="${#lists.isEmpty(ticket.note)}">
+                                <p>Nessuna nota disponibile.</p>
+                            </div>
+                            <!--Le note esistenti in DB per il ticket selezionato-->
+                            <div th:each="nota : ${ticket.note}" class="mb-3 p-3 border rounded">
+                                <p><strong>Autore:</strong> <span th:text="${nota.autore.email}"></span></p>
+                                <p><strong>Data creazione:</strong> <span th:text="${nota.dataNota}"></span></p>
+                                <p><strong>Contenuto:</strong> <span th:text="${nota.descrizione}"></span></p>
+                            </div>
+                       </div>
+
+                       <h4>Aggiungi una nuova nota</h4>
+                        <form th:action="@{/nota/create}" method="post" th:object="${nota}">
+                            <input type="hidden" name="ticketId" th:value="${ticket.ticketId}" />
+                            
+                            <div class="mb-3">
+                                <label for="testo" class="form-label">Nota</label>
+                                <textarea class="form-control" id="testo" th:field="*{descrizione}" rows="3"></textarea>
+                            </div>
+                            
+                            <button type="submit" class="btn btn-primary">Aggiungi Nota</button>
+                        </form>
                     </div>
                 </div>
             </div>

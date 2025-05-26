@@ -1,9 +1,12 @@
 package com.example.demo.controller;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -37,15 +40,39 @@ public class UserController {
 
 
     @GetMapping
-    public String index(Model model,@RequestParam(name = "keyword", required = false) String email) {
+    public String index(Model model,
+                       @RequestParam(name = "keyword", required = false) String email,
+                        Authentication authentication) {
+
+        String userLoggato = authentication.getName(); // ottieni email loggato
+        Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
 
         List<User> utentiList;
+
+        boolean isAdmin = false;
+        for (GrantedAuthority role : authorities) {
+            if (role.getAuthority().equals("admin")) {
+                isAdmin = true;
+                 break;
+            }
+        }
         
-        if (email !=null && !email.isEmpty()) {
-            utentiList=userRepository.findByEmailContainingIgnoreCase(email);
-            
-        }else {
-            utentiList=userRepository.findAll();
+        if (isAdmin) {
+            // nel caso dell'admin lista tutti gli operatori
+            if (email != null && !email.isEmpty()) {
+                utentiList = userRepository.findByEmailContainingIgnoreCase(email);
+            } else {
+                utentiList = userRepository.findAll();
+            }
+        } else {
+            // nel caso dell'oper lista solo se stesso
+            Optional<User> currentUser = userRepository.findByEmail(userLoggato);
+            if (currentUser.isPresent()) {
+                  utentiList = List.of(currentUser.get());
+            } else {
+                utentiList = List.of();
+            }
+
         }
 
         model.addAttribute("utenti",utentiList);
@@ -152,6 +179,19 @@ public class UserController {
             return "operatore/edit";
         }
     
+
+        // se ci sono ticket con lo stato "da fare","in corso" allora non salvare il nuovo stato dell'operatore
+        String nuovoStato = operatore.getStatoUser().getStatoDescription();
+        if ("non attivo".equalsIgnoreCase(nuovoStato)) {
+            List<String> statiAttivi = List.of("da fare", "in corso");
+    
+            List<Ticket> ticketAttivi = ticketRepository.findByAssegnatoAIdAndStatoTicketId_statoDescriptionIn(elementoUser, statiAttivi);
+            if (!ticketAttivi.isEmpty()) {
+                result.rejectValue("statoUser", "error.operatore", "Non puoi impostare lo stato a 'non attivo' finché ci sono ticket in corso o da fare.");
+                return "operatore/edit";
+            }
+        }
+
         // Aggiorna i dati
         elementoUser.setEmail(operatore.getEmail());
         elementoUser.setPassword(operatore.getPassword());

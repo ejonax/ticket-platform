@@ -17,4 +17,5 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 
     /* serve per trovare la lista degli user disponibili cosi gli assegnamo a dei ticket nuovi */
     List<User> findByStatoUser_StatoDescription(String statoDescription);
+
 }
