@@ -2,6 +2,9 @@ package com.example.demo.model;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -35,6 +38,7 @@ public class User {
     //stato-user table
     @ManyToOne
     @JoinColumn(name = "stato_user_id", nullable = false)
+    @JsonBackReference
     private StatoUser statoUser;
 
     //urser-role table
@@ -44,18 +48,22 @@ public class User {
         joinColumns = @JoinColumn(name = "user_id"),
         inverseJoinColumns = @JoinColumn(name = "role_id")
     )
+    @JsonIgnore
     private List<Role> roles;
 
     //nota table
     @OneToMany(mappedBy = "autore")
+    @JsonIgnore
     private List<Nota> noteCreate;
 
     //ticket table
     @OneToMany(mappedBy = "creatoDaId")
+    @JsonIgnore
     private List<Ticket> ticketCreati;
 
     //ticket table
     @OneToMany(mappedBy = "assegnatoAId")
+    @JsonIgnore
     private List<Ticket> ticketAssegnati;
 
    

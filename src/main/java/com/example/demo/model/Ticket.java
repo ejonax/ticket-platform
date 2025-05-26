@@ -5,6 +5,9 @@ import java.util.List;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -63,10 +66,12 @@ public class Ticket {
 
     //nota table
     @OneToMany(mappedBy = "ticket")
+    @JsonIgnore
     private List<Nota> note;
 
     //category-ticket table
     @ManyToMany
+   @JsonManagedReference
     @JoinTable(
         name = "Category_Ticket",
         joinColumns = @JoinColumn(name = "ticket_id"),

@@ -26,15 +26,8 @@ public class SecurityConfiguration {
                 .requestMatchers("/nota", "/nota/**").hasAnyAuthority("oper", "admin")
                 .requestMatchers("/**").permitAll()
                 .and().formLogin()
-                   //   .loginPage("/login")
-                   //   .defaultSuccessUrl("/ticket/index", true)
                 .and().logout()
-                 // .logoutUrl("/logout") // lascia così
-                  //.invalidateHttpSession(true)
-                 // .deleteCookies("JSESSIONID")
-                //  .permitAll()
                 ;
-            
 
         return http.build();
     }
