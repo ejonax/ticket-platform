@@ -43,6 +43,13 @@
                                         </select>
                                     </div>
                                     <div class="col-12">
+                                        <label for="roleId" class="form-label">Ruolo</label>
+                                        <select name="roleId" th:field="*{roles}" class="form-select" id="roleId" required>
+                                            <option value="" selected>Seleziona un ruolo</option>
+                                            <option th:each="ruolo : ${ruoli}" th:value="${ruolo.roleId}" th:text="${ruolo.roleName}"></option>
+                                        </select>
+                                    </div>
+                                    <div class="col-12">
                                         <button class="btn btn-primary mt-2" type="submit"><i class="fas fa-check"></i> Save</button>
                                         <a class="btn btn-danger mt-2" th:href="@{/operatore}"> <i class="fas fa-times"></i> Cancel</a>
                                     </div>

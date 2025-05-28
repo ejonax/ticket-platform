@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.demo.model.Ticket;
 import com.example.demo.model.User;
+import com.example.demo.repository.RoleRepository;
 import com.example.demo.repository.StatoUserRepository;
 import com.example.demo.repository.TicketRepository;
 import com.example.demo.repository.UserRepository;
@@ -37,6 +38,9 @@ public class UserController {
 
     @Autowired
     private TicketRepository ticketRepository;
+
+    @Autowired
+    private RoleRepository roleRepository;
 
 
     @GetMapping
@@ -78,6 +82,7 @@ public class UserController {
         model.addAttribute("utenti",utentiList);
         model.addAttribute("utentiObj", new User());
         model.addAttribute("stati", statoUserRepository.findAll());
+        model.addAttribute("ruoli", roleRepository.findAll());
         return "operatore/index";
     }
 
@@ -85,6 +90,7 @@ public class UserController {
     public String create(Model model) {
     model.addAttribute("utentiObj", new User());
     model.addAttribute("stati", statoUserRepository.findAll());
+    model.addAttribute("ruoli", roleRepository.findAll());
     return "operatore/create";
 }
 
@@ -95,6 +101,7 @@ public class UserController {
                         BindingResult bindingResult) {
 
         model.addAttribute("stati", statoUserRepository.findAll());
+        model.addAttribute("ruoli", roleRepository.findAll());
 
         // se esiste già email nella nostra DB allora non inseriamo di nuovo come operatore
         if (userRepository.existsByEmail(operatore.getEmail())) {
@@ -103,6 +110,11 @@ public class UserController {
 
         if (bindingResult.hasErrors()) {
             model.addAttribute("utenti", userRepository.findAll());
+            return "operatore/create";
+        }
+
+        if (operatore.getRoles() == null || operatore.getRoles().isEmpty()) {
+            bindingResult.rejectValue("roles", "error.utente", "Devi selezionare un ruolo.");
             return "operatore/create";
         }
 
@@ -124,6 +136,7 @@ public class UserController {
     
         model.addAttribute("user", optUser.get());
         model.addAttribute("tickets", ticketList);
+        model.addAttribute("ruoli", roleRepository.findAll());
     
         return "operatore/show";
        
@@ -143,6 +156,7 @@ public class UserController {
         if (optUser.isPresent()) {
             model.addAttribute("operatore", optUser.get());
             model.addAttribute("stati", statoUserRepository.findAll()); 
+            model.addAttribute("ruoli", roleRepository.findAll());
             return "operatore/edit";
         }
 
@@ -158,6 +172,7 @@ public class UserController {
                           Model model) {
     
         model.addAttribute("stati", statoUserRepository.findAll());
+        model.addAttribute("ruoli", roleRepository.findAll());
         Optional<User> userByIDOptional = userRepository.findById(id);
     
         if (userByIDOptional.isEmpty()) {
@@ -179,6 +194,7 @@ public class UserController {
             return "operatore/edit";
         }
     
+       
 
         // se ci sono ticket con lo stato "da fare","in corso" allora non salvare il nuovo stato dell'operatore
         String nuovoStato = operatore.getStatoUser().getStatoDescription();

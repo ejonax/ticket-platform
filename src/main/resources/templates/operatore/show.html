@@ -20,6 +20,7 @@
                                 <li><strong>Email:</strong> <span th:text="${user.email}"></span></li>
                                 <li><strong>Username:</strong> <span th:text="${user.password}"></span></li>
                                 <li><strong>Stato:</strong> <span th:text="${user.statoUser.statoDescription}"></span></li>
+                                <li><strong>Ruolo</strong> <span th:each="ruolo : ${user.roles}" th:text="${ruolo.roleName}"></span></li>
                             </ul>
                         </div>
                         <h3>Ticket assegnati</h3>

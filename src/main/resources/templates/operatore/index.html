@@ -59,6 +59,7 @@
                         <th>Email</th>
                         <th>Password</th>
                         <th>Stato</th>
+                        <th>Ruolo</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -66,6 +67,7 @@
                             <td th:text="${utenteElemento.email}"></td>
                             <td th:text="${utenteElemento.password}"></td>
                             <td th:text="${utenteElemento.statoUser.statoDescription}"></td>
+                            <td th:each="ruolo : ${utenteElemento.roles}" th:text="${ruolo.roleName}"></td>
                             <td>
                                 <a class="btn btn-primary" th:href="@{|/operatore/show/${utenteElemento.userId}|}">
                                     <i class="bi bi-book"></i>
